@@ -1,0 +1,4 @@
+Django==4.0
+djangorestframework==3.13.1
+newsapi==0.1.1
+newsapi_python==0.2.6
