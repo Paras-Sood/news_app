@@ -1,9 +1,7 @@
 from django.http.response import JsonResponse
-from django.shortcuts import render
 from backend.models import Article, ArticleSerializer, Source
 from newsapi import NewsApiClient
 import datetime as dt
-import pytz
 from django.utils.dateparse import parse_datetime
 
 
@@ -52,6 +50,8 @@ def api(request):
     maxResults=10
     if 'maxResults' in request.GET:
         maxResults=int(request.GET['maxResults'])
+        if maxResults<0 or maxResults>50:
+            maxResults=10
     data=Article.objects.order_by('-publishedAt')[:maxResults]
     serializer=ArticleSerializer(data, many = True)
     return JsonResponse(serializer.data,safe = False)
