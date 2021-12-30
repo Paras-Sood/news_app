@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News App</title>
+    <script>
+        var q="sports",maxResults=10;
+        document.addEventListener('DOMContentLoaded',()=>{
+            get_news()
+            document.querySelector('form').onsubmit = () => {
+                let new_q=document.querySelector('#q').value
+                if(new_q!==""){
+                    q=new_q;
+                }
+                let new_maxRes=document.querySelector('#maxResults').value
+                if(new_maxRes!==""){
+                    maxResults=new_maxRes;
+                }
+                get_news()
+                return false
+            }
+        })
+        function get_news(){
+            document.querySelector('#data').innerHTML="Loading..."
+            fetch(`/news?q=${q}&maxResults=${maxResults}`)
+            .then(response=>response.json())
+            .then(articles=>{
+                document.querySelector('#data').innerHTML=""
+                articles.forEach(article => {
+                    let div=document.createElement('div')
+                    let author=document.createElement('h2')
+                    author.innerHTML=`Author = ${article.author}`
+                    div.append(author)
+                    let title=document.createElement('h4')
+                    title.innerHTML=`Title = ${article.title}`
+                    div.append(title)
+                    let des=document.createElement('p')
+                    des.innerHTML=`Description = ${article.description}`
+                    div.append(des)
+                    let content=document.createElement('p')
+                    content.innerHTML=`Content = ${article.content}`
+                    div.append(content)
+                    let url=document.createElement('a')
+                    url.innerHTML=`URL = ${article.author}`
+                    div.append(url)
+                    let source=document.createElement('p')
+                    source.innerHTML=`Source =>  ID = ${article.source.id} Name = ${article.source.name}`
+                    div.append(source)
+                    div.style.display='flex'
+                    div.style.flexDirection='column'
+                    div.style.border='1px solid black'
+                    div.style.borderRadius='4px'
+                    div.style.margin='10px'
+                    div.style.padding='10px'
+                    document.querySelector('#data').append(div)
+                });
+            })
+        }
+    </script>
+</head>
+<body>
+    <form style="margin: 10px; padding: 10px;border: 1px solid gray;border-radius: 4px;text-align: center;font-size: large;">
+        <label for="q">Query (Default = sports)</label>
+        <input type="text" id="q">
+        <label for="maxResults">Max Results (Default = 10)</label>
+        <input type="number" min="0" max="50" id="maxResults">
+        <input type="submit" value="GET">
+    </form>
+    <div style="margin: 20px;" id="data"></div>
+</body>
+</html>

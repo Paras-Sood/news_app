@@ -3,7 +3,7 @@ from backend.models import Article, ArticleSerializer, Source
 from newsapi import NewsApiClient
 import datetime as dt
 from django.utils.dateparse import parse_datetime
-
+from django.shortcuts import render
 
 # Made this query class to keep record of - data of which query is present in database
 class Query:
@@ -55,3 +55,6 @@ def api(request):
     data=Article.objects.order_by('-publishedAt')[:maxResults]
     serializer=ArticleSerializer(data, many = True)
     return JsonResponse(serializer.data,safe = False)
+
+def index(request):
+    return render(request,"backend/index.html")
