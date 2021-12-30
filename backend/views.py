@@ -20,7 +20,7 @@ query=Query()
 
 def get_data(q="sports"):
     Article.objects.all().delete()
-    newsapi = NewsApiClient(api_key='<Your API Key>')
+    newsapi = NewsApiClient(api_key='94e2b7f0789541df9f96a405c0a4fcc9')
     data = newsapi.get_everything(q=q,from_param=f"{dt.date.today()}",language='en',sort_by='publishedAt',page_size=50,page=1)
     for article in data['articles']:
         if article['source']['id']!="": # if source id is not empty
